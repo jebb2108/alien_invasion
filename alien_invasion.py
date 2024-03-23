@@ -92,9 +92,12 @@ class AlienInvasion:
             self.bullets.empty()
 
 
-            #С оздание нового флота.
+            # Создание нового флота.
             self._create_fleet()
             self.ship.center_ship()
+            
+            # Указатель мыши скрывается.
+            pygame.mouse.set_visible(False)
 
     def _fire_bullet(self):
         """ Создает новый снаряд и добавляет его в группу. """
@@ -163,6 +166,7 @@ class AlienInvasion:
 
         else:
             self.stats.game_avtive = False
+            pygame.mouse.set_visible(True)
     
     
 
