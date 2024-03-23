@@ -4,6 +4,7 @@ import pygame
 
 from settings import Settings
 from game_stats import GameStats
+from button import Button
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
@@ -31,6 +32,8 @@ class AlienInvasion:
 
         self._create_fleet()
 
+        self.play_button = Button(self, "Play")
+
     def run_game(self):
         """ Запуск основного цикла игры. """
         while True:
@@ -53,6 +56,9 @@ class AlienInvasion:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
 
     def _check_keydown_events(self, event):
         """ Реагирует на нажатие клавиш. """
@@ -72,6 +78,23 @@ class AlienInvasion:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
+    
+    def _check_play_button(self, mouse_pos):
+        """ Запускает новую игру при нажатии кнопки Play. """
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.stats.game_avtive:
+            # Сброс игровой статистики.
+            self.stats.reset_stats()
+            self.stats.game_avtive = True
+
+            # Очистка списков пришельцев и снарядов.
+            self.aliens.empty()
+            self.bullets.empty()
+
+
+            #С оздание нового флота.
+            self._create_fleet()
+            self.ship.center_ship()
 
     def _fire_bullet(self):
         """ Создает новый снаряд и добавляет его в группу. """
@@ -187,7 +210,10 @@ class AlienInvasion:
             bullet.draw_bullet()
         self.ship.blitme()
         self.aliens.draw(self.screen)
-
+        
+        # Кнопка Play отображается в том случае, если игра неактивна.
+        if not self.stats.game_avtive:
+            self.play_button.draw_button()
         pygame.display.flip()
 
 
