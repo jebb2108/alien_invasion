@@ -92,6 +92,7 @@ class AlienInvasion:
             self.stats.reset_stats()
             self.stats.game_avtive = True
             self.sb.prep_score()
+            self.sb.prep_level()
 
             # Очистка списков пришельцев и снарядов.
             self.aliens.empty()
@@ -134,12 +135,15 @@ class AlienInvasion:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
+            self.sb.check_high_score()
 
         if not self.aliens:
             # Уничтожает существующие снаряды и создает новый флот.
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+            self.stats.level += 1
+            self.sb.prep_level()
 
     
     def _check_aliens_bottom(self):
