@@ -83,6 +83,8 @@ class AlienInvasion:
         """ Запускает новую игру при нажатии кнопки Play. """
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_avtive:
+            # Сброс игровых настроек.
+            self.settings.initialize_dynamic_settings()
             # Сброс игровой статистики.
             self.stats.reset_stats()
             self.stats.game_avtive = True
@@ -128,6 +130,7 @@ class AlienInvasion:
             # Уничтожает существующие снаряды и создает новый флот.
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
     
     def _check_aliens_bottom(self):
         """ Проверяет, добрались ли пришельцы до нижнего края экрана. """
