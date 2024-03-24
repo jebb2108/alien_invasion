@@ -1,2 +1,2 @@
 # alien_invasion
-my first game project which is Alien Invasion
+My first game project Alien Invasion which is based on python crash course
