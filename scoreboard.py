@@ -1,5 +1,6 @@
 import pygame.font
 from pygame.sprite import Group
+import json
 
 from ship import Ship
 
@@ -72,8 +73,14 @@ class Scoreboard():
         self.screen.blit(self.level_image, self.level_rect)
         self.ships.draw(self.screen)
 
+    def dump_json(self, score):
+        filename = 'records.json'
+        with open(filename, 'w') as f:
+            json.dump(score, f)
+
     def check_high_score(self):
         """ Проверяет, появился ли новый рекорд. """
         if self.stats.score > self.stats.high_score:
             self.stats.high_score = self.stats.score
             self.prep_high_score()
+            self.dump_json(self.stats.high_score)
